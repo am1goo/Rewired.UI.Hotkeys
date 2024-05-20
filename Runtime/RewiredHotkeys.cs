@@ -12,6 +12,9 @@ namespace Rewired.UI
         [SerializeField]
         private bool _dontDestroyOnLoad = true;
 
+        private static bool _isReady;
+        public static bool isReady => _isReady;
+
         private static Player _systemPlayer = null;
         public static Player systemPlayer => _systemPlayer;
 
@@ -43,6 +46,9 @@ namespace Rewired.UI
 
             var systemPlayer = ReInput.players.SystemPlayer;
             _systemPlayer = new Player(systemPlayer);
+            _players.Add(_systemPlayer);
+
+            _isReady = true;
         }
 
         private void Update()
@@ -129,7 +135,7 @@ namespace Rewired.UI
                     //do nothing
                 }
 
-                onControllerChanged?.Invoke(_lastActiveController);
+                 onControllerChanged?.Invoke(_lastActiveController);
             }
         }
     }

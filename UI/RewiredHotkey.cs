@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,7 +36,20 @@ namespace Rewired.UI.Hotkeys
 
         private void Awake()
         {
-            _player = RewiredHotkeys.systemPlayer;
+            OnControllerChanged(null);
+        }
+
+        private IEnumerator Start()
+        {
+            yield return new WaitUntil(() => RewiredHotkeys.isReady);
+
+            OnActionChanged(actionId);
+
+            if (_player != null)
+                yield break;
+
+            var systemPlayer = RewiredHotkeys.systemPlayer;
+            SetPlayer(systemPlayer);
         }
 
         private void OnDestroy()
@@ -81,11 +95,6 @@ namespace Rewired.UI.Hotkeys
                 OnControllerChanged(_player.lastActiveController);
                 _player.onControllerChanged += OnControllerChanged;
             }
-        }
-
-        private void Start()
-        {
-            OnActionChanged(_action.actionId);
         }
 
         private void OnControllerChanged(Controller controller)
