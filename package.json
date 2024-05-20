@@ -1,8 +1,8 @@
 {
     "name": "com.am1goo.rewired.ui.hotkeys",
     "version": "1.0.0",
-    "displayName": "Hotkeys UI module to Rewired advanced input system",
-    "description": "Hotkeys UI module to Rewired advanced input system for Unity",
+    "displayName": "Rewired.UI.Hotkeys",
+    "description": "Brings hotkeys into UI, based on Rewired advanced input system for Unity",
     "unity": "2020.3",
     "license": "MIT",
     "licensesUrl": "https://raw.githubusercontent.com/am1goo/unity-rewired-hotkeys/main/LICENSE",
