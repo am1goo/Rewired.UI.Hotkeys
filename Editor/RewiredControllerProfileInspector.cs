@@ -47,7 +47,9 @@ namespace Rewired.UI.Hotkeys
         {
             var keyboardType = typeof(Keyboard);
 
-            var instanceId = CreateGuidHashSHA1("[Universal Keyboard]");
+            var constsType = typeof(Consts);
+            var instanceIdField = constsType.GetField("hardwareTypeGuid_universalKeyboard", BindingFlags.NonPublic | BindingFlags.Static);
+            var instanceId = (Guid)instanceIdField.GetValue(null);
 
             var keyIndexToKeyboardKeyCodeProp = keyboardType.GetProperty("keyIndexToKeyboardKeyCode", BindingFlags.NonPublic | BindingFlags.Static);
             var keyIndexToKeyboardKeyCode = (KeyboardKeyCode[])keyIndexToKeyboardKeyCodeProp.GetValue(null);
@@ -69,7 +71,9 @@ namespace Rewired.UI.Hotkeys
 
         private static DefaultAssets CreateMouseButtons()
         {
-            var instanceId = CreateGuidHashSHA1("[Universal Mouse]");
+            var constsType = typeof(Consts);
+            var instanceIdField = constsType.GetField("hardwareTypeGuid_universalMouse", BindingFlags.NonPublic | BindingFlags.Static);
+            var instanceId = (Guid)instanceIdField.GetValue(null);
 
             var list = new List<RewiredControllerProfile.ElementAssets>()
             {
@@ -86,7 +90,20 @@ namespace Rewired.UI.Hotkeys
             return new DefaultAssets(instanceId, list);
         }
 
-        private static Guid CreateGuidHashSHA1(string text)
+        private static Guid InputTools_FormatHardwareIdentifierString(string text)
+        {
+            var assembly = typeof(Utils.UnityTools).Assembly;
+            var inputToolsType = assembly.GetType("Rewired.Utils.InputTools");
+
+            var formatHardwareIdentifierStringMethod = inputToolsType.GetMethod("FormatHardwareIdentifierString", BindingFlags.Public | BindingFlags.Static);
+            var formatHardwareIdentifierString = formatHardwareIdentifierStringMethod.Invoke(null, new object[] { text });
+
+            var guidString = (string)formatHardwareIdentifierString;
+            var guid = Guid.Parse(guidString);
+            return guid;
+        }
+
+        private static Guid MiscTools_CreateGuidHashSHA1(string text)
         {
             var assembly = typeof(Utils.UnityTools).Assembly;
             var miscToolsType = assembly.GetType("Rewired.Utils.MiscTools");
