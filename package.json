@@ -8,14 +8,14 @@
     "licensesUrl": "https://raw.githubusercontent.com/am1goo/unity-rewired-hotkeys/main/LICENSE",
     "documentationUrl": "https://github.com/am1goo/unity-rewired-hotkeys/blob/main/README.md",
     "keywords": [
-		"glyphs",
-		"hotkeys",
+        "glyphs",
+        "hotkeys",
         "rewired",
         "advanced",
         "input",
-		"ui",
-		"system",
-		"sdk"
+        "ui",
+        "system",
+        "sdk"
     ],
     "author": {
         "name": "Pavel 'am1goo' Shestakov",
