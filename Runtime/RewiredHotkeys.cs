@@ -10,6 +10,8 @@ namespace Rewired.UI
         private static RewiredHotkeys _instance;
 
         [SerializeField]
+        private Settings _settings;
+        [SerializeField]
         private bool _dontDestroyOnLoad = true;
 
         private static bool _isReady;
@@ -55,7 +57,7 @@ namespace Rewired.UI
         {
             for (int i = 0; i < _players.Count; ++i)
             {
-                _players[i].Update();
+                _players[i].Update(_settings);
             }
         }
 
@@ -80,6 +82,24 @@ namespace Rewired.UI
             _players.Remove(player);
             player.Dispose();
             return true;
+        }
+
+        public enum DefaultController : byte
+        {
+            None        = 0,
+            Keyboard    = 1,
+            Mouse       = 2,
+        }
+
+        [Serializable]
+        public class Settings
+        {
+            [SerializeField]
+            private DefaultController _defaultController = DefaultController.Keyboard;
+            public DefaultController defaultController => _defaultController;
+            [SerializeField]
+            private bool _preventChangeToMouse = true;
+            public bool preventChangeToMouse => _preventChangeToMouse;
         }
 
         public class Player : IDisposable
@@ -111,9 +131,16 @@ namespace Rewired.UI
                 _lastActiveController = null;
             }
 
-            public void Update()
+            public void Update(Settings settings)
             {
                 var ctrl = _player.controllers.GetLastActiveController();
+
+                if (ctrl != null && ctrl.type == ControllerType.Mouse && settings.preventChangeToMouse)
+                    ctrl = _lastActiveController;
+
+                if (ctrl == null)
+                    ctrl = GetDefaultController(_player, settings.defaultController);
+
                 SetController(ctrl);
             }
 
@@ -136,6 +163,20 @@ namespace Rewired.UI
                 }
 
                  onControllerChanged?.Invoke(_lastActiveController);
+            }
+
+            private Controller GetDefaultController(Rewired.Player player, DefaultController type)
+            {
+                switch (type)
+                {
+                    case DefaultController.Keyboard:
+                        return player.controllers.hasKeyboard ? player.controllers.Keyboard : null;
+                    case DefaultController.Mouse:
+                        return player.controllers.hasMouse ? player.controllers.Mouse : null;
+                    case DefaultController.None:
+                    default:
+                        return null;
+                }
             }
         }
     }
