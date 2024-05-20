@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Rewired.UI
+namespace Rewired.UI.Hotkeys
 {
     public class RewiredGlyphs : MonoBehaviour
     {

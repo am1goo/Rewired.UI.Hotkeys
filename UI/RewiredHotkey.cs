@@ -112,7 +112,7 @@ namespace Rewired.UI.Hotkeys
         {
             if (RewiredGlyphs.TryGetAssets(controller, actionId, out var assets))
             {
-                var sprite = assets.GetSprite(RewiredControllerProfile.ElementAssets.State.Normal);
+                var sprite = assets.graphicAssets.GetSprite(RewiredControllerProfile.ElementAssets.State.Normal);
                 _icon.enabled = true;
                 _icon.sprite = sprite;
             }
@@ -120,6 +120,21 @@ namespace Rewired.UI.Hotkeys
             {
                 _icon.sprite = null;
                 _icon.enabled = false;
+            }
+        }
+
+        [Serializable]
+        public class HotkeyAction
+        {
+            [SerializeField]
+#if REWIRED_UI_HOTKEYS_USE_CONSTS
+            [ActionIdProperty(typeof(RewiredConsts.Action))]
+#endif
+            private int _actionId = -1;
+            public int actionId
+            {
+                get => _actionId;
+                set => _actionId = value;
             }
         }
     }

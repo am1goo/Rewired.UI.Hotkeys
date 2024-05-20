@@ -63,7 +63,9 @@ namespace Rewired.UI.Hotkeys
                     Debug.LogError($"CreateKeyboardButtons: elementId not found for {keyCode}");
                     continue;
                 }
-                list.Add(new RewiredControllerProfile.ElementAssets(keyCode.ToString(), elementId));
+
+                var name = keyCode.ToString();
+                list.Add(new RewiredControllerProfile.ElementAssets(name, elementId));
             }
             list.Sort(RewiredControllerProfile.ElementAssets.SortByElementId);
             return new DefaultAssets(instanceId, list);

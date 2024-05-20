@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Rewired.UI
+namespace Rewired.UI.Hotkeys
 {
     public class RewiredHotkeys : MonoBehaviour
     {
