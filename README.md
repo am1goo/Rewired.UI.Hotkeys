@@ -23,6 +23,8 @@ The latest version can be installed via [package manager](https://docs.unity3d.c
 ## Tested in
 - Unity 2019.4.x
 - Unity 2020.3.x
+with
+- Rewired Advanced Input System 1.1.39.2
   
 ## Using in
 [Sin Slayers](https://www.gog.com/en/game/sin_slayers) - RPG with roguelike elements set in a dark fantasy world, where your choices determine how challenging the fights and enemies will be.
