@@ -1,0 +1,26 @@
+{
+    "name": "com.am1goo.rewired.ui.hotkeys",
+    "version": "0.1.0",
+    "displayName": "Hotkeys UI module to Rewired advanced input system",
+    "description": "Hotkeys UI module to Rewired advanced input system for Unity",
+    "unity": "2020.3",
+    "license": "MIT",
+    "licensesUrl": "https://raw.githubusercontent.com/am1goo/unity-rewired-hotkeys/main/LICENSE",
+    "documentationUrl": "https://github.com/am1goo/unity-rewired-hotkeys/blob/main/README.md",
+    "keywords": [
+		"glyphs",
+		"hotkeys",
+        "rewired",
+        "advanced",
+        "input",
+		"ui",
+		"system",
+		"sdk"
+    ],
+    "author": {
+        "name": "Pavel 'am1goo' Shestakov",
+        "email": "0xShestakov@gmail.com",
+        "url": "https://github.com/am1goo"
+    },
+    "type": "library"
+}

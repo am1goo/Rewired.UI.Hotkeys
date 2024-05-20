@@ -1,0 +1,14 @@
+{
+    "name": "Rewired.UI.Hotkeys.Runtime",
+    "rootNamespace": "Rewired.UI.Hotkeys",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

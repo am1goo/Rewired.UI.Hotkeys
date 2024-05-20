@@ -1,0 +1,18 @@
+{
+    "name": "Rewired.UI.Hotkeys.Editor",
+    "rootNamespace": "Rewired.UI.Hotkeys",
+    "references": [
+        "GUID:e8a086fdbb33cc2438d83bb2cef8cfb3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
