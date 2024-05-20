@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Rewired.UI.Hotkeys
@@ -40,6 +41,50 @@ namespace Rewired.UI.Hotkeys
         {
             _assets = assets;
         }
+
+        public bool EditorFindAssets(List<Sprite> sprites, out string report, out string error)
+        {
+            sprites.Sort(SortBeSpriteName);
+
+            var pairs = new Dictionary<string, string>();
+            foreach (var asset in _assets)
+            {
+                var found = sprites.FindAll(x => x.name.Contains($"_{asset.name}") || x.name.Contains($"{asset.name}_"));
+
+                var normal = found.Find(x => !x.name.Contains("pressed"));
+                var pressed = found.Find(x => x.name.Contains("pressed"));
+
+                if (normal != null && asset.graphicAssets.normal == null && !pairs.ContainsKey(normal.name))
+                {
+                    asset.graphicAssets.EditorSetSprite(ElementAssets.State.Normal, normal);
+                    pairs.Add(normal.name, asset.name);
+                }
+
+                if (pressed != null && asset.graphicAssets.pressed == null && !pairs.ContainsKey(pressed.name))
+                {
+                    asset.graphicAssets.EditorSetSprite(ElementAssets.State.Pressed, pressed);
+                    pairs.Add(pressed.name, asset.name);
+                }
+            }
+
+            if (pairs.Count > 0)
+            {
+                report = string.Join(Environment.NewLine, pairs.Select(x => $"{x.Key} -> {x.Value}"));
+                error = default;
+                return true;
+            }
+            else
+            {
+                report = default;
+                error = "No sprites found";
+                return false;
+            }
+        }
+
+        private static int SortBeSpriteName(Sprite a, Sprite b)
+        {
+            return a.name.Length.CompareTo(b.name.Length);
+        }
 #endif
 
         [Serializable]
@@ -61,6 +106,11 @@ namespace Rewired.UI.Hotkeys
                 _name = name;
                 _elementId = elementId;
                 _graphicAssets = new GraphicAssets();
+            }
+
+            public void EditorSetSprite(State state, Sprite sprite)
+            {
+                _graphicAssets.EditorSetSprite(state, sprite);
             }
 #endif
             public static int SortByElementId(ElementAssets a, ElementAssets b)
@@ -97,6 +147,21 @@ namespace Rewired.UI.Hotkeys
                         return null;
                 }
             }
+
+#if UNITY_EDITOR
+            public void EditorSetSprite(ElementAssets.State state, Sprite sprite)
+            {
+                switch (state)
+                {
+                    case ElementAssets.State.Normal:
+                        _normal = sprite;
+                        break;
+                    case ElementAssets.State.Pressed:
+                        _pressed = sprite;
+                        break;
+                }
+            }
+#endif
         }
     }
 }

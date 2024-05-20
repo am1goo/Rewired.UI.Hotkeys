@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 using System.Linq;
+using System.IO;
 
 namespace Rewired.UI.Hotkeys
 {
     [CustomEditor(typeof(RewiredControllerProfile))]
     public class RewiredControllerProfileInspector : UnityEditor.Editor
     {
+        private const string _ppRecentOpenedFolder = "REWIRED_UI_HOTKEYS_RECENT_OPENED_FOLDER";
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -30,6 +33,37 @@ namespace Rewired.UI.Hotkeys
                     EditorUtility.SetDirty(target);
                 }
             }
+            else
+            {
+                if (GUILayout.Button("Import Sprites .."))
+                {
+                    var recentOpenedFolder = EditorPrefs.GetString(_ppRecentOpenedFolder, Application.dataPath);
+                    recentOpenedFolder = EditorUtility.OpenFolderPanel("Select folder with sprites", recentOpenedFolder, string.Empty);
+                    if (!string.IsNullOrWhiteSpace(recentOpenedFolder))
+                    {
+                        var sprites = new List<Sprite>();
+                        if (FindSpritesForAssets(profile, recentOpenedFolder, sprites, out var error))
+                        {
+                            if (profile.EditorFindAssets(sprites, out var report, out var err))
+                            {
+                                EditorPrefs.SetString(_ppRecentOpenedFolder, recentOpenedFolder);
+                                EditorUtility.DisplayDialog("Import completed", report, "Okay");
+                                Debug.Log($"Import completed: {report}");
+                            }
+                            else
+                            {
+                                EditorUtility.DisplayDialog("Error", err, "Okay");
+                                Debug.LogError($"Error: {err}");
+                            }
+                        }
+                        else
+                        {
+                            EditorUtility.DisplayDialog("Error", error, "Okay");
+                            Debug.LogError($"Error: {error}");
+                        }
+                    }
+                }
+            }
         }
 
         private static void SetAssets(RewiredControllerProfile profile, DefaultAssets assets)
@@ -41,6 +75,41 @@ namespace Rewired.UI.Hotkeys
         {
             profile.EditorSetGuid(instanceId.ToString());
             profile.EditorSetAssets(assets.ToArray());
+        }
+
+        private static bool FindSpritesForAssets(RewiredControllerProfile profile, string folderPath, List<Sprite> result, out string error)
+        {
+            var di = new DirectoryInfo(folderPath);
+            if (!di.Exists)
+            {
+                error = $"Folder {di.FullName} not exists";
+                return false;
+            }
+
+            var diPath = Path.GetDirectoryName(di.FullName);
+            var dataPath = Path.GetDirectoryName(Application.dataPath);
+            if (!diPath.StartsWith(dataPath))
+            {
+                error = $"Folder {di.FullName} should be inside of Assets project folder";
+                return false;
+            }
+
+            foreach (var fi in di.GetFiles())
+            {
+                switch (fi.Extension)
+                {
+                    case ".meta":
+                        continue;
+                }
+
+                var filePath = fi.FullName;
+                var pathInAssets = filePath.Substring(dataPath.Length, filePath.Length - dataPath.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(pathInAssets);
+                result.Add(sprite);
+            }
+
+            error = default;
+            return true;
         }
 
         private static DefaultAssets CreateKeyboardButtons()
