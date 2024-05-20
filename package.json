@@ -1,6 +1,6 @@
 {
     "name": "com.am1goo.rewired.ui.hotkeys",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "displayName": "Hotkeys UI module to Rewired advanced input system",
     "description": "Hotkeys UI module to Rewired advanced input system for Unity",
     "unity": "2020.3",
