@@ -5,6 +5,7 @@ An expansions to Guavaman's Rewired Unity Asset that provides a easy-to-use API 
 - full supports of Rewired's glyphs in UI (one `RewiredHotkey` component for all needs)
 - binded to Rewired's actions (you don't miss any of actions)
 - fast integration of keyboard and mouse glyphs (just create `Rewired->Controller Profile` scriptable object and make one click `Add Keyboard Buttons`)
+- batch import potential sprites into controller profile
 
 ## How to use
 - place `RewiredGlyphs` and `RewiredHotkeys` on the same (or not) prefab as `RewiredInput` script placed
