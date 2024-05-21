@@ -1,4 +1,5 @@
 # Rewired.UI.Hotkey
+<img src="Readme/logo.png" alt="logo" width=500 height=auto/>
 An expansions to Guavaman's Rewired Unity Asset that provides a easy-to-use API for showing input icons to the player at runtime based on their input method and bindings.
 
 ## Features
@@ -9,7 +10,12 @@ An expansions to Guavaman's Rewired Unity Asset that provides a easy-to-use API 
 
 ## How to use
 - create controller profiles for each device what you need via context menu `Create->Rewired->Controller Profile`
+<img src="Readme/profile_keyboard_before.png" alt="profile_keyboard_before" width=400 height=auto/>
+<img src="Readme/profile_keyboard_after.png" alt="profile_keyboard_after" width=400 height=auto/>
+
 - create `Rewired Hotkeys Manager` via top menu `Window->Rewired->Create->Hotkeys Manager (in scene)` or `Window->Rewired->Create->Hotkeys Manager (prefab)`
+<img src="Readme/menu_create_hotkeys_manager.png" alt="menu_create_hotkeys_manager" width=800 height=auto/>
+
 - add `RewiredHotkey` component into your UI and select specific action what you want to bind
 
 ## Installation
