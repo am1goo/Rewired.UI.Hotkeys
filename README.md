@@ -1,6 +1,6 @@
-# Rewired.UI.Hotkey
+# Rewired.UI.Hotkeys
 <img src="Readme/logo.png" alt="logo" width=500 height=auto/>
-An expansions to Guavaman's Rewired Unity Asset that provides a easy-to-use API for showing input icons to the player at runtime based on their input method and bindings.
+A plugin for Guavaman's Rewired Unity Asset that provides an easy-to-use API for showing controller hotkeys to the player at runtime based on their bindings and input method.
 
 ## Features
 - full supports of Rewired's glyphs in UI
