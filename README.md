@@ -2,14 +2,14 @@
 An expansions to Guavaman's Rewired Unity Asset that provides a easy-to-use API for showing input icons to the player at runtime based on their input method and bindings.
 
 ## Features
-- full supports of Rewired's glyphs in UI (one `RewiredHotkey` component for all needs)
+- full supports of Rewired's glyphs in UI
 - binded to Rewired's actions (you don't miss any of actions)
-- fast integration of keyboard and mouse glyphs (just create `Rewired->Controller Profile` scriptable object and make one click `Add Keyboard Buttons`)
+- fast integration of keyboard, mouse and gamepads glyphs
 - batch import potential sprites into controller profile
 
 ## How to use
-- place `RewiredGlyphs` and `RewiredHotkeys` on the same (or not) prefab as `RewiredInput` script placed
-- create controller profiles for each device what you need and link these profiles to `RewiredGlyphs`
+- create controller profiles for each device what you need via context menu `Create->Rewired->Controller Profile`
+- create `Rewired Hotkeys Manager` via top menu `Window->Rewired->Create->Hotkeys Manager (in scene)` or `Window->Rewired->Create->Hotkeys Manager (prefab)`
 - add `RewiredHotkey` component into your UI and select specific action what you want to bind
 
 ## Installation
