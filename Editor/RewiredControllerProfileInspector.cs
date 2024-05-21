@@ -44,11 +44,11 @@ namespace Rewired.UI.Hotkeys
                         var sprites = new List<Sprite>();
                         if (FindSpritesForAssets(profile, recentOpenedFolder, sprites, out var error))
                         {
-                            if (profile.EditorFindAssets(sprites, out var report, out var err))
+                            if (profile.EditorImportAssets(sprites, out var report, out var err))
                             {
                                 EditorPrefs.SetString(_ppRecentOpenedFolder, recentOpenedFolder);
                                 EditorUtility.DisplayDialog("Import completed", report, "Okay");
-                                Debug.Log($"Import completed: {report}");
+                                Debug.Log($"Import completed:{Environment.NewLine}{report}");
                             }
                             else
                             {

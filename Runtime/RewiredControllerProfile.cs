@@ -42,17 +42,17 @@ namespace Rewired.UI.Hotkeys
             _assets = assets;
         }
 
-        public bool EditorFindAssets(List<Sprite> sprites, out string report, out string error)
+        public bool EditorImportAssets(List<Sprite> sprites, out string report, out string error)
         {
             sprites.Sort(SortBeSpriteName);
 
             var pairs = new Dictionary<string, string>();
             foreach (var asset in _assets)
             {
-                var found = sprites.FindAll(x => x.name.Contains($"_{asset.name}") || x.name.Contains($"{asset.name}_"));
+                var found = sprites.FindAll(x => OnFindAll(x, asset));
 
-                var normal = found.Find(x => !x.name.Contains("pressed"));
-                var pressed = found.Find(x => x.name.Contains("pressed"));
+                var normal = found.Find(x => OnFindSpriteByState(x, ElementAssets.State.Normal));
+                var pressed = found.Find(x => OnFindSpriteByState(x, ElementAssets.State.Pressed));
 
                 if (normal != null && asset.graphicAssets.normal == null && !pairs.ContainsKey(normal.name))
                 {
@@ -69,7 +69,8 @@ namespace Rewired.UI.Hotkeys
 
             if (pairs.Count > 0)
             {
-                report = string.Join(Environment.NewLine, pairs.Select(x => $"{x.Key} -> {x.Value}"));
+                var spritesInfo = string.Join(Environment.NewLine, pairs.Select(x => $"{x.Key} -> {x.Value}"));
+                report = $"Total sprites: {pairs.Count}{Environment.NewLine}{spritesInfo}";
                 error = default;
                 return true;
             }
@@ -78,6 +79,27 @@ namespace Rewired.UI.Hotkeys
                 report = default;
                 error = "No sprites found";
                 return false;
+            }
+        }
+
+        private static bool OnFindAll(Sprite sprite, ElementAssets asset)
+        {
+            var lowerSpriteName = sprite.name.ToLowerInvariant();
+            var lowerAssetName = asset.name.ToLowerInvariant();
+            return lowerSpriteName.StartsWith($"{lowerAssetName}_") || lowerSpriteName.Contains($"_{lowerAssetName}_") || lowerSpriteName.EndsWith($"_{lowerAssetName}");
+        }
+
+        private static bool OnFindSpriteByState(Sprite sprite, ElementAssets.State state)
+        {
+            var lowerSpriteName = sprite.name.ToLowerInvariant();
+            switch (state)
+            {
+                case ElementAssets.State.Normal:
+                    return !lowerSpriteName.Contains("pressed");
+                case ElementAssets.State.Pressed:
+                    return lowerSpriteName.Contains("pressed");
+                default:
+                    return false;
             }
         }
 
