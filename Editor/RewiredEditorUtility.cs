@@ -10,7 +10,6 @@ namespace Rewired.UI.Hotkeys
         private static readonly string _objectNameAndExtension = $"{_objectName}.prefab";
         private static readonly string _assetPath = $"Assets/Rewired.UI.Hotkeys/{_objectNameAndExtension}";
 
-        [MenuItem("Window/Rewired/Create/Hotkeys Manager (in scene)")]
         public static void CreateObjectInScene()
         {
             var existedObject = FindObjectInScene();
@@ -44,7 +43,6 @@ namespace Rewired.UI.Hotkeys
             }
         }
 
-        [MenuItem("Window/Rewired/Create/Hotkeys Manager (prefab)")]
         public static void CreateObjectAsPrefab()
         {
             var existedPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(_assetPath);
@@ -94,6 +92,18 @@ namespace Rewired.UI.Hotkeys
                 profiles[i] = AssetDatabase.LoadAssetAtPath<RewiredControllerProfile>(path);
             }
             return profiles;
+        }
+
+        public static RewiredHotkey AddRewiredHotkey(UnityEngine.Object context)
+        {
+            if (context is not GameObject go)
+                return null;
+
+            var t = go.GetComponent<RewiredHotkey>();
+            if (t != null)
+                return t;
+
+            return go.AddComponent<RewiredHotkey>();
         }
     }
 }

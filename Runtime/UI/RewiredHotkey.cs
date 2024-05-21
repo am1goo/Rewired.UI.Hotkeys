@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Rewired.UI.Hotkeys
 {
-    [AddComponentMenu("UI/Rewired Hotkey")]
+    [AddComponentMenu("Rewired/Rewired Hotkey")]
     public class RewiredHotkey : MonoBehaviour
     {
         [SerializeField]
