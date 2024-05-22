@@ -16,6 +16,9 @@ namespace Rewired.UI.Hotkeys
 
         public bool isEmpty => _assets == null || _assets.Length == 0;
 
+        private const string _prefixAlpha = "alpha";
+        private const string _prefixKeypad = "keypad";
+
         public bool TryGetValue(int elementId, out ElementAssets result)
         {
             foreach (var asset in _assets)
@@ -86,6 +89,7 @@ namespace Rewired.UI.Hotkeys
         {
             var lowerSpriteName = sprite.name.ToLowerInvariant();
             var lowerAssetName = asset.name.ToLowerInvariant();
+            lowerAssetName = TrimPrefix(lowerAssetName, _prefixAlpha, _prefixKeypad);
             return lowerSpriteName.StartsWith($"{lowerAssetName}_") || lowerSpriteName.Contains($"_{lowerAssetName}_") || lowerSpriteName.EndsWith($"_{lowerAssetName}");
         }
 
@@ -101,6 +105,25 @@ namespace Rewired.UI.Hotkeys
                 default:
                     return false;
             }
+        }
+
+        private static string TrimPrefix(string text, params string[] prefixes)
+        {
+            foreach (var prefix in prefixes)
+            {
+                text = TrimPrefix(text, prefix);
+            }
+            return text;
+        }
+
+        private static string TrimPrefix(string text, string prefix)
+        {
+            if (string.IsNullOrWhiteSpace(prefix))
+                return text;
+
+            if (text.StartsWith(prefix))
+                text = text.Substring(prefix.Length, text.Length - prefix.Length);
+            return text;
         }
 
         private static int SortBeSpriteName(Sprite a, Sprite b)
