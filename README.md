@@ -17,6 +17,7 @@ A plugin for Guavaman's Rewired Unity Asset that provides an easy-to-use API for
 <img src="Readme/menu_create_hotkeys_manager.png" alt="menu_create_hotkeys_manager" width=800 height=auto/>
 
 - add `RewiredHotkey` component into your UI and select specific action what you want to bind
+<img src="Readme/ui_rewired_hotkey_component.png" alt="ui_rewired_hotkey_component" width=800 height=auto/>
 
 ## Installation
 ##### via Unity Package Manager
