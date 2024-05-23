@@ -63,7 +63,12 @@ namespace Rewired.UI.Hotkeys
 
         private void OnEnable()
         {
-            if (_player != null)
+            if (_player == null)
+            {
+                var systemPlayer = RewiredHotkeys.systemPlayer;
+                SetPlayer(systemPlayer);
+            }
+            else
             {
                 OnControllerChanged(_player.lastActiveController);
                 _player.onControllerChanged -= OnControllerChanged;
