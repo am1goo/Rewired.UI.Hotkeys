@@ -120,7 +120,11 @@ namespace Rewired.UI.Hotkeys
             var instanceIdField = constsType.GetField("hardwareTypeGuid_universalKeyboard", BindingFlags.NonPublic | BindingFlags.Static);
             var instanceId = (Guid)instanceIdField.GetValue(null);
 
+            var rewiredVersion = ReInput.programVersion;
+
             var keyIndexToKeyboardKeyCodeProp = keyboardType.GetProperty("keyIndexToKeyboardKeyCode", BindingFlags.NonPublic | BindingFlags.Static);
+            if (rewiredVersion.EndsWith("U2022"))
+                keyIndexToKeyboardKeyCodeProp = keyboardType.GetProperty("ReoBaIdXYUJgrnvUFaCDLNzzoWJdb", BindingFlags.NonPublic | BindingFlags.Static);
             var keyIndexToKeyboardKeyCode = (KeyboardKeyCode[])keyIndexToKeyboardKeyCodeProp.GetValue(null);
 
             var list = new List<RewiredControllerProfile.ElementAssets>();
