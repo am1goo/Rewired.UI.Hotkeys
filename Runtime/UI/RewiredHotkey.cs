@@ -110,17 +110,23 @@ namespace Rewired.UI.Hotkeys
 
         private void OnUpdateWidget(Controller controller, int actionId)
         {
-            if (RewiredGlyphs.TryGetAssets(controller, actionId, out var assets))
-            {
-                var sprite = assets.graphicAssets.GetSprite(RewiredControllerProfile.ElementAssets.State.Normal);
-                _icon.enabled = true;
-                _icon.sprite = sprite;
-            }
-            else
+            if (_player == null)
             {
                 _icon.sprite = null;
                 _icon.enabled = false;
+                return;
             }
+
+            if (!RewiredGlyphs.TryGetAssets(_player.rewiredPlayer, controller, actionId, out var assets))
+            {
+                _icon.sprite = null;
+                _icon.enabled = false;
+                return;
+            }
+
+            var sprite = assets.graphicAssets.GetSprite(RewiredControllerProfile.ElementAssets.State.Normal);
+            _icon.enabled = true;
+            _icon.sprite = sprite;
         }
 
         [Serializable]

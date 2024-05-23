@@ -62,8 +62,14 @@ namespace Rewired.UI.Hotkeys
             _dict.Clear();
         }
 
-        public static bool TryGetAssets(Controller controller, int actionId, out RewiredControllerProfile.ElementAssets result)
+        public static bool TryGetAssets(Player player, Controller controller, int actionId, out RewiredControllerProfile.ElementAssets result)
         {
+            if (player == null)
+            {
+                result = default;
+                return false;
+            }
+
             if (controller == null)
             {
                 result = default;
@@ -76,7 +82,7 @@ namespace Rewired.UI.Hotkeys
                 return false;
             }    
 
-            var map = ReInput.players.GetSystemPlayer().controllers.maps.GetFirstButtonMapWithAction(controller.type, actionId, skipDisabledMaps: true);
+            var map = player.controllers.maps.GetFirstElementMapWithAction(controller.type, controller.id, actionId, skipDisabledMaps: true);
             if (map == null)
             {
                 result = default;

@@ -107,8 +107,8 @@ namespace Rewired.UI.Hotkeys
             private bool _isDisposed;
             public bool isDisposed => _isDisposed;
 
-            private Rewired.Player _player;
-            public Rewired.Player player => _player;
+            private Rewired.Player _rewiredPlayer;
+            public Rewired.Player rewiredPlayer => _rewiredPlayer;
 
             private Controller _lastActiveController;
             public Controller lastActiveController => _lastActiveController;
@@ -118,7 +118,7 @@ namespace Rewired.UI.Hotkeys
 
             public Player(Rewired.Player player)
             {
-                _player = player;
+                _rewiredPlayer = player;
             }
 
             public void Dispose()
@@ -127,19 +127,19 @@ namespace Rewired.UI.Hotkeys
                     return;
 
                 _isDisposed = true;
-                _player = null;
+                _rewiredPlayer = null;
                 _lastActiveController = null;
             }
 
             public void Update(Settings settings)
             {
-                var ctrl = _player.controllers.GetLastActiveController();
+                var ctrl = _rewiredPlayer.controllers.GetLastActiveController();
 
                 if (ctrl != null && ctrl.type == ControllerType.Mouse && settings.preventChangeToMouse)
                     ctrl = _lastActiveController;
 
                 if (ctrl == null)
-                    ctrl = GetDefaultController(_player, settings.defaultController);
+                    ctrl = GetDefaultController(_rewiredPlayer, settings.defaultController);
 
                 SetController(ctrl);
             }
