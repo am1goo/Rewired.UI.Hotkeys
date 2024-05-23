@@ -13,7 +13,7 @@ namespace Rewired.UI.Hotkeys
             var glyphs = target as RewiredGlyphs;
             if (GUILayout.Button("Find Profiles"))
             {
-                var profiles = RewiredEditorUtility.FindProfilesInAssets();
+                var profiles = RewiredEditorUtility.FindAssets<RewiredControllerProfile>();
                 glyphs.EditorSetProfiles(profiles);
                 EditorUtility.SetDirty(target);
             }

@@ -5,6 +5,8 @@ using System;
 using System.Reflection;
 using System.Linq;
 using System.IO;
+using Rewired.Data.Mapping;
+using UnityEngine.UIElements;
 
 namespace Rewired.UI.Hotkeys
 {
@@ -13,13 +15,26 @@ namespace Rewired.UI.Hotkeys
     {
         private const string _ppRecentOpenedFolder = "REWIRED_UI_HOTKEYS_RECENT_OPENED_FOLDER";
 
+        private static HardwareJoystickMap[] _joystickMaps;
+        private static string[] _joystickNames;
+
+        private const string _joystickNameNone = "None";
+
+        private void OnEnable()
+        {
+            RebuildHardwareJoystickMaps();
+        }
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
+            OnUpdateHardwareJoystickMapsIfNeed();
+
             var profile = target as RewiredControllerProfile;
             if (profile.isEmpty)
             {
+                GUILayout.Label("Keyboard & Mouse");
                 if (GUILayout.Button("Add Keyboard Buttons"))
                 {
                     var assets = CreateKeyboardButtons();
@@ -29,6 +44,16 @@ namespace Rewired.UI.Hotkeys
                 if (GUILayout.Button("Add Mouse Buttons"))
                 {
                     var assets = CreateMouseButtons();
+                    SetAssets(profile, assets);
+                    EditorUtility.SetDirty(target);
+                }
+
+                GUILayout.Label("Joysticks");
+                var selectedJoystickIndex = EditorGUILayout.Popup("Add Joystick Buttons", 0, _joystickNames);
+                var selectedJoystick = _joystickNames[selectedJoystickIndex];
+                if (selectedJoystick != _joystickNameNone)
+                {
+                    var assets = CreateJoystickButtons(selectedJoystick);
                     SetAssets(profile, assets);
                     EditorUtility.SetDirty(target);
                 }
@@ -112,6 +137,20 @@ namespace Rewired.UI.Hotkeys
             return true;
         }
 
+        private static void OnUpdateHardwareJoystickMapsIfNeed()
+        {
+            if (_joystickMaps != null)
+                return;
+
+            RebuildHardwareJoystickMaps();
+        }
+
+        private static void RebuildHardwareJoystickMaps()
+        {
+            _joystickMaps = RewiredEditorUtility.FindAssets<HardwareJoystickMap>();
+            _joystickNames = _joystickMaps.Select(x => x.ControllerName).Prepend(_joystickNameNone).ToArray();
+        }
+
         private static DefaultAssets CreateKeyboardButtons()
         {
             var keyboardType = typeof(Keyboard);
@@ -162,6 +201,22 @@ namespace Rewired.UI.Hotkeys
                 new RewiredControllerProfile.ElementAssets("Mouse Button 5", 7),
                 new RewiredControllerProfile.ElementAssets("Mouse Wheel Horizontal", 10),
             };
+            return new DefaultAssets(instanceId, list);
+        }
+        
+        private static DefaultAssets CreateJoystickButtons(string joystickName)
+        {
+            var map = _joystickMaps.FirstOrDefault(x => x.ControllerName == joystickName);
+            if (map == null)
+                return default;
+
+            var instanceId = map.Guid;
+
+            var list = new List<RewiredControllerProfile.ElementAssets>();
+            foreach (var element in map.ElementIdentifiers)
+            {
+                list.Add(new RewiredControllerProfile.ElementAssets(element.name, element.id));
+            }
             return new DefaultAssets(instanceId, list);
         }
 

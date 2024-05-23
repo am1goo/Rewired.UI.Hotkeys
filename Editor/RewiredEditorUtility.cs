@@ -76,22 +76,22 @@ namespace Rewired.UI.Hotkeys
             var hotkeys = obj.AddComponent<RewiredHotkeys>();
             var glyphs = obj.AddComponent<RewiredGlyphs>();
 
-            var profiles = FindProfilesInAssets();
+            var profiles = FindAssets<RewiredControllerProfile>();
             glyphs.EditorSetProfiles(profiles);
             return obj;
         }
 
-        public static RewiredControllerProfile[] FindProfilesInAssets()
-        {
-            var profilesGuids = AssetDatabase.FindAssets($"t:{typeof(RewiredControllerProfile)}");
-            var profiles = new RewiredControllerProfile[profilesGuids.Length];
-            for (int i = 0; i < profiles.Length; ++i)
+        public static T[] FindAssets<T>() where T : UnityEngine.Object
+        { 
+            var objGuids = AssetDatabase.FindAssets($"t:{typeof(T)}");
+            var objs = new T[objGuids.Length];
+            for (int i = 0; i < objs.Length; ++i)
             {
-                var guid = profilesGuids[i];
+                var guid = objGuids[i];
                 var path = AssetDatabase.GUIDToAssetPath(guid);
-                profiles[i] = AssetDatabase.LoadAssetAtPath<RewiredControllerProfile>(path);
+                objs[i] = AssetDatabase.LoadAssetAtPath<T>(path);
             }
-            return profiles;
+            return objs;
         }
 
         public static RewiredHotkey AddRewiredHotkey(UnityEngine.Object context)
