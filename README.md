@@ -3,7 +3,7 @@
 A plugin for Guavaman's Rewired Unity Asset that provides an easy-to-use API for showing controller hotkeys to the player at runtime based on their bindings and input method.
 
 ## Features
-- full supports of Rewired's glyphs in UI
+- full supports for Rewired's glyphs in UI
 - binded to Rewired's actions (you don't miss any of actions)
 - fast integration of keyboard, mouse and gamepads glyphs
 - batch import potential sprites into controller profile
@@ -26,13 +26,14 @@ The latest version can be installed via [package manager](https://docs.unity3d.c
 
 ## Requirements
 - Unity Engine 2019.x
-- Rewired Advanced Input System [Asset Store](https://assetstore.unity.com/packages/tools/utilities/rewired-21676)
+- [Rewired Advanced Input System](https://assetstore.unity.com/packages/tools/utilities/rewired-21676)
 
 ## Tested in
 - Unity 2019.4.x
 - Unity 2020.3.x
 with
-- Rewired Advanced Input System 1.1.39.2
+- Rewired Advanced Input System 1.1.39.2 (U2019)
+- Rewired Advanced Input System 1.1.51.1 (U2022)
   
 ## Using in
 [Sin Slayers](https://www.gog.com/en/game/sin_slayers) - RPG with roguelike elements set in a dark fantasy world, where your choices determine how challenging the fights and enemies will be.
