@@ -96,7 +96,7 @@ namespace Rewired.UI.Hotkeys
 
         public static RewiredHotkey AddRewiredHotkey(UnityEngine.Object context)
         {
-            if (context is not GameObject go)
+            if (!(context is GameObject go))
                 return null;
 
             var t = go.GetComponent<RewiredHotkey>();
