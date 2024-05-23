@@ -7,6 +7,7 @@ A plugin for Guavaman's Rewired Unity Asset that provides an easy-to-use API for
 - binded to Rewired's actions (you don't miss any of actions)
 - fast integration of keyboard, mouse and gamepads glyphs
 - batch import potential sprites into controller profile
+<img src="Readme/unity_hotkeys_example.gif" alt="unity_hotkeys_example" width=800 height=auto/>
 
 ## How to use
 - create controller profiles for each device what you need via context menu `Create->Rewired->Controller Profile`
