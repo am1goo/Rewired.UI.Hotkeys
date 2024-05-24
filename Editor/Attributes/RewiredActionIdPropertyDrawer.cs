@@ -9,6 +9,7 @@ namespace Rewired.UI.Hotkeys
     [CustomPropertyDrawer(typeof(RewiredActionIdPropertyAttribute))]
     public class RewiredActionIdPropertyDrawer : PropertyDrawer
     {
+        private static readonly string[] _optionsNotInitialized = new string[] { "None" };
         private static readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
         private static Assembly _assembly;
 
@@ -22,8 +23,11 @@ namespace Rewired.UI.Hotkeys
         private const string _noneStr = "None";
         private const int _noneValue = -1;
 
-        private void Initialize(SerializedProperty property, Type type)
+        private bool Initialize(SerializedProperty property, Type type)
         {
+            if (type == null)
+                return false;
+
             var stringsByValue = new Dictionary<int, string>();
             var valuesByString = new Dictionary<string, int>();
             var options = new List<string>();
@@ -51,6 +55,7 @@ namespace Rewired.UI.Hotkeys
             _valuesByString = valuesByString;
             _options = options.ToArray();
             _selectedIndex = GetIndexOf(property);
+            return true;
         }
 
         private int GetIndexOf(SerializedProperty property)
@@ -81,17 +86,26 @@ namespace Rewired.UI.Hotkeys
                 _type = Lookup(attr.type);
 
             if (!_initialized)
+                _initialized = Initialize(property, _type);
+
+            if (_initialized)
             {
-                Initialize(property, _type);
-                _initialized = true;
+                var selectedIndex = EditorGUI.Popup(position, _selectedIndex, _options);
+                if (selectedIndex == _selectedIndex)
+                    return;
+
+                SetIndexOf(property, selectedIndex);
+                _selectedIndex = selectedIndex;
             }
+            else
+            {
+                var prevEnabled = GUI.enabled;
+                GUI.enabled = false;
+                EditorGUI.Popup(position, 0, _optionsNotInitialized);
+                GUI.enabled = prevEnabled;
 
-            var selectedIndex = EditorGUI.Popup(position, _selectedIndex, _options);
-            if (selectedIndex == _selectedIndex)
-                return;
-
-            SetIndexOf(property, selectedIndex);
-            _selectedIndex = selectedIndex;
+                EditorGUILayout.HelpBox("Export 'RewiredConsts.cs' file into project via Rewired Input Manager (Tools -> Export)", MessageType.Warning);
+            }
         }
 
         private static Type Lookup(string lookupType)

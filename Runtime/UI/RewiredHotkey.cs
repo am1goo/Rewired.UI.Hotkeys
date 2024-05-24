@@ -137,7 +137,7 @@ namespace Rewired.UI.Hotkeys
         [Serializable]
         public class HotkeyAction
         {
-            [RewiredActionIdProperty("RewiredConsts.Action")]
+            [RewiredActionIdProperty()]
             [SerializeField]
             private int _actionId = -1;
             public int actionId
