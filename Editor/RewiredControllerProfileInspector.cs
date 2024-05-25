@@ -73,6 +73,7 @@ namespace Rewired.UI.Hotkeys
                             {
                                 EditorPrefs.SetString(_ppRecentOpenedFolder, recentOpenedFolder);
                                 EditorUtility.DisplayDialog("Import completed", report, "Okay");
+                                EditorUtility.SetDirty(target);
                                 Debug.Log($"Import completed:{Environment.NewLine}{report}");
                             }
                             else
