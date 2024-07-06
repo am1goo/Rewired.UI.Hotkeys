@@ -27,7 +27,7 @@ The latest version can be installed via [package manager](https://docs.unity3d.c
 `https://github.com/am1goo/Rewired.UI.Hotkeys.git#1.0.0`
 
 ## Requirements
-- Unity Engine 2019.x
+- Unity Engine 2019.x or higher
 - [Rewired Advanced Input System](https://assetstore.unity.com/packages/tools/utilities/rewired-21676)
 
 ## Tested in
