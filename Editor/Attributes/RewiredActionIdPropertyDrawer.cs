@@ -11,7 +11,6 @@ namespace Rewired.UI.Hotkeys
     {
         private static readonly string[] _optionsNotInitialized = new string[] { "None" };
         private static readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
-        private static Assembly _assembly;
 
         private bool _initialized;
         private Type _type;
@@ -113,15 +112,17 @@ namespace Rewired.UI.Hotkeys
             if (_types.TryGetValue(lookupType, out var exist))
                 return exist;
 
-            if (_assembly == null)
+            var found = default(Type);
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
             {
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                _assembly = Array.Find(assemblies, x => x.FullName == "Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+                found = assembly.GetType(lookupType);
+                if (found != null)
+                    break;
             }
 
-            var type = _assembly.GetType(lookupType);
-            _types.Add(lookupType, type);
-            return type;
+            _types.Add(lookupType, found);
+            return found;
         }
     }
 }
