@@ -53,7 +53,6 @@ namespace Rewired.UI.Hotkeys
             _stringsByValue = stringsByValue;
             _valuesByString = valuesByString;
             _options = options.ToArray();
-            _selectedIndex = GetIndexOf(property);
             return true;
         }
 
@@ -89,6 +88,7 @@ namespace Rewired.UI.Hotkeys
 
             if (_initialized)
             {
+                _selectedIndex = GetIndexOf(property);
                 var selectedIndex = EditorGUI.Popup(position, _selectedIndex, _options);
                 if (selectedIndex == _selectedIndex)
                     return;
