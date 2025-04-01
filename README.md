@@ -24,7 +24,7 @@ A plugin for Guavaman's Rewired Unity Asset that provides an easy-to-use API for
 ## Installation
 ##### via Unity Package Manager
 The latest version can be installed via [package manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using following git URL: \
-`https://github.com/am1goo/Rewired.UI.Hotkeys.git#1.0.1`
+`https://github.com/am1goo/Rewired.UI.Hotkeys.git#1.0.2`
 
 ## Requirements
 - Unity Engine 2019.x or higher
