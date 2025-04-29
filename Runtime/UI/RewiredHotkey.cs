@@ -37,6 +37,8 @@ namespace Rewired.UI.Hotkeys
         private void Awake()
         {
             OnControllerChanged(null);
+
+            RewiredGlyphs.onOverrideChanged += OnGlyphsOverrideChanged;
         }
 
         private IEnumerator Start()
@@ -54,6 +56,8 @@ namespace Rewired.UI.Hotkeys
 
         private void OnDestroy()
         {
+            RewiredGlyphs.onOverrideChanged -= OnGlyphsOverrideChanged;
+
             if (_player != null)
             {
                 _player.onControllerChanged -= OnControllerChanged;
@@ -104,6 +108,15 @@ namespace Rewired.UI.Hotkeys
 
         private void OnControllerChanged(Controller controller)
         {
+            OnUpdateWidget(controller, actionId);
+        }
+
+        private void OnGlyphsOverrideChanged(ControllerType controllerType)
+        {
+            var controller = _player != null ? _player.lastActiveController : null;
+            if (controller == null || controller.type != controllerType)
+                return;
+
             OnUpdateWidget(controller, actionId);
         }
 
