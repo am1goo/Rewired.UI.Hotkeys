@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Rewired.UI.Hotkeys
 {
@@ -66,7 +67,7 @@ namespace Rewired.UI.Hotkeys
             _profilesByGuid.Clear();
         }
 
-        public static bool TryGetAssets(Player player, Controller controller, int actionId, out RewiredControllerProfile.ElementAssets result)
+        public static bool TryGetAssets(Player player, Controller controller, int actionId, Pole axisContribution, out RewiredControllerProfile.ElementAssets result)
         {
             if (player == null)
             {
@@ -86,14 +87,30 @@ namespace Rewired.UI.Hotkeys
                 return false;
             }
 
-            var map = player.controllers.maps.GetFirstElementMapWithAction(controller.type, controller.id, actionId, skipDisabledMaps: true);
-            if (map == null)
+            var found = default(ActionElementMap);
+            using (ListPool<ActionElementMap>.Get(out var cache))
+            {
+                player.controllers.maps.GetElementMapsWithAction(controller.type, controller.id, actionId, skipDisabledMaps: true, cache);
+                
+                var mapsCount = cache.Count;
+                for (int i = 0; i < mapsCount; ++i)
+                {
+                    var map = cache[i];
+                    if (map.axisContribution == axisContribution)
+                    {
+                        found = map;
+                        break;
+                    }
+                }
+            }
+
+            if (found == null)
             {
                 result = default;
                 return false;
             }
 
-            return TryGetAssets(controller.type, controller.hardwareTypeGuid, map.elementIdentifierId, out result);
+            return TryGetAssets(controller.type, controller.hardwareTypeGuid, found.elementIdentifierId, out result);
         }
 
         public static bool TryGetAssets(ControllerType type, Guid guid, int elementId, out RewiredControllerProfile.ElementAssets result)

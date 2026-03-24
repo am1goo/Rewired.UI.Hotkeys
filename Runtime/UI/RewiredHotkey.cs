@@ -29,6 +29,19 @@ namespace Rewired.UI.Hotkeys
             }
         }
 
+        public Pole axisContribution
+        {
+            get => _action.axisContribution;
+            set
+            {
+                if (_action.axisContribution == value)
+                    return;
+
+                _action.axisContribution = value;
+                OnAxisContributionChanged(value);
+            }
+        }
+
         private void OnValidate()
         {
             _icon = GetComponentInChildren<Image>();
@@ -108,7 +121,7 @@ namespace Rewired.UI.Hotkeys
 
         private void OnControllerChanged(Controller controller)
         {
-            OnUpdateWidget(controller, actionId);
+            OnUpdateWidget(controller, actionId, axisContribution);
         }
 
         private void OnGlyphsOverrideChanged(ControllerType controllerType)
@@ -117,16 +130,22 @@ namespace Rewired.UI.Hotkeys
             if (controller == null || controller.type != controllerType)
                 return;
 
-            OnUpdateWidget(controller, actionId);
+            OnUpdateWidget(controller, actionId, axisContribution);
         }
 
         private void OnActionChanged(int actionId)
         {
             var controller = _player != null ? _player.lastActiveController : null;
-            OnUpdateWidget(controller, actionId);
+            OnUpdateWidget(controller, actionId, axisContribution);
         }
 
-        private void OnUpdateWidget(Controller controller, int actionId)
+        private void OnAxisContributionChanged(Pole axisContribution)
+        {
+            var controller = _player != null ? _player.lastActiveController : null;
+            OnUpdateWidget(controller, actionId, axisContribution);
+        }
+
+        private void OnUpdateWidget(Controller controller, int actionId, Pole axisContribution)
         {
             if (_player == null)
             {
@@ -135,7 +154,7 @@ namespace Rewired.UI.Hotkeys
                 return;
             }
 
-            if (!RewiredGlyphs.TryGetAssets(_player.rewiredPlayer, controller, actionId, out var assets))
+            if (!RewiredGlyphs.TryGetAssets(_player.rewiredPlayer, controller, actionId, axisContribution, out var assets))
             {
                 _icon.sprite = null;
                 _icon.enabled = false;
@@ -157,6 +176,14 @@ namespace Rewired.UI.Hotkeys
             {
                 get => _actionId;
                 set => _actionId = value;
+            }
+
+            [SerializeField]
+            private Pole _axisContribution;
+            public Pole axisContribution
+            {
+                get => _axisContribution;
+                set => _axisContribution = value;
             }
         }
     }
